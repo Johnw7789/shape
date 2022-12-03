@@ -8,21 +8,20 @@ This harvester has only been tested on Target.com. Success on other sites may va
 ```Create a ShapeHarvester and generate headers every second```
 
 ```
-	harvester := ShapeHarvester{
-		Url:            "https://www.target.com",
-		ShapeUrl:       "https://carts.target.com/web_checkouts/v1/cart_items?field_groups=CART,CART_ITEMS,SUMMARY&key=9f36aeafbe60771e321a7cc95a78140772ab3e96",
-		Identifier:     "cart_items",
-		Method:         "POST",
-		Body:           "{}",
-		BlockResources: true,
-	}
+harvester := ShapeHarvester{
+	Url:            "https://www.target.com",
+	ShapeUrl:       "https://carts.target.com/web_checkouts/v1/cart_items?field_groups=CART,CART_ITEMS,SUMMARY&key=9f36aeafbe60771e321a7cc95a78140772ab3e96",
+	Identifier:     "cart_items",
+	Method:         "POST",
+	Body:           "{}",
+	BlockResources: true,
+}
 
-	harvester.InitializeHarvester()
+harvester.InitializeHarvester()
 
-	for {
-		harvester.HarvestHeaders()
-		log.Println(harvester.Headers.XGyJwza5Za)
-		time.Sleep(time.Second * time.Duration(1))
-	}
+for {
+	harvester.HarvestHeaders()
+	log.Println(harvester.Headers.XGyJwza5Za)
+	time.Sleep(time.Second * time.Duration(1))
 }
 ```
