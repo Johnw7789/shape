@@ -101,12 +101,10 @@ func (harvester *ShapeHarvester) InitializeHijacking() {
 		if harvester.BlockResources {
 			if ctx.Request.Type() == proto.NetworkResourceTypeImage {
 				ctx.Response.Fail(proto.NetworkErrorReasonBlockedByClient)
-				return
 			}
 
 			if ctx.Request.Type() == proto.NetworkResourceTypeStylesheet {
 				ctx.Response.Fail(proto.NetworkErrorReasonBlockedByClient)
-				return
 			}
 			ctx.ContinueRequest(&proto.FetchContinueRequest{})
 		}
