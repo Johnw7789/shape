@@ -11,7 +11,7 @@ This harvester has only been tested on Target.com. Success on other sites may va
 ```Creates a ShapeHarvester and harvests headers every second```
 
 ```
-harvester := ShapeHarvester{
+harvester := shape.ShapeHarvester{
 	Url:            "https://www.target.com",
 	ShapeUrl:       "https://carts.target.com/web_checkouts/v1/cart_items?field_groups=CART,CART_ITEMS,SUMMARY&key=9f36aeafbe60771e321a7cc95a78140772ab3e96",
 	Identifier:     "cart_items",
