@@ -1,5 +1,4 @@
-module github.com/Johnw7789/Shape-Harvester
-
+module github.com/Johnw7789/shape
 go 1.19
 
 require (
