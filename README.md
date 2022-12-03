@@ -8,7 +8,7 @@ Hijacks the requests from a headless browser in order to harvest required header
 ##### Target
 This harvester has only been tested on Target.com. Success on other sites may vary wildly.
 
-```Create a ShapeHarvester and generate headers every second```
+```Creates a ShapeHarvester and harvests headers every second```
 
 ```
 harvester := ShapeHarvester{
