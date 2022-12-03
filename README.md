@@ -1,6 +1,9 @@
 # Shape Harvester
 Hijacks the requests from a headless browser in order to harvest required headers used for protected endpoints. After the headers are harvested the request is blocked so it cannot be completed.
 
+## Installation
+``go get github.com/Johnw7789/shape``
+
 ## Usage
 ##### Target
 This harvester has only been tested on Target.com. Success on other sites may vary wildly.
