@@ -2,7 +2,6 @@ package shape
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
