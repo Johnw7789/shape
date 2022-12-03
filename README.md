@@ -25,6 +25,26 @@ harvester := shape.ShapeHarvester{
 
 harvester.InitializeHarvester()
 
+/*harvester.Page.MustEmulate(devices.Device{
+  Title:          "iPhone 12",
+  Capabilities:   []string{"touch", "mobile"},
+  UserAgent:      "Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+  AcceptLanguage: "en",
+  Screen: devices.Screen{
+    DevicePixelRatio: 2,
+    Horizontal: devices.ScreenSize{
+      Width:  1266,
+      Height: 585,
+    },
+    Vertical: devices.ScreenSize{
+      Width:  585,
+      Height: 1266,
+    },
+  },
+})*/
+
+// Can emulate a wide variety of devices if preferred 
+
 for {
 	harvester.HarvestHeaders()
 	log.Println(harvester.Headers.XGyJwza5Za)
