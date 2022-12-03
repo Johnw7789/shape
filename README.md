@@ -10,7 +10,7 @@ This harvester has only been tested on Target.com. Success on other sites may va
 
 
 ```
-//Creates a ShapeHarvester and harvests headers every 2 seconds
+// Creates a ShapeHarvester and harvests headers every 2 seconds
 
 harvester := shape.ShapeHarvester{
 	Url:            "https://www.target.com",
@@ -18,7 +18,7 @@ harvester := shape.ShapeHarvester{
 	Identifier:     "cart_items",
 	Method:         "POST",
 	Body:           "{}",
-	BlockResources: true,
+	BlockResources: true, // Blocks extra unnecessary resources such as images and css
 }
 
 harvester.InitializeHarvester()
