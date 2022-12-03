@@ -19,7 +19,7 @@ func NewBrowser(proxy string) *rod.Browser {
 	var browser *rod.Browser
 
 	if proxy != "" {
-		//incomplete proxy probably won't work yet
+		//incomplete proxy won't work yet
 
 		l := launcher.New()
 		l = l.Set(flags.ProxyServer, proxy)
