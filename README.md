@@ -1,6 +1,8 @@
 # Shape Harvester
 Hijacks the requests from a headless browser in order to harvest required headers used for protected endpoints. After the headers are harvested the request is blocked so it cannot be completed.
 
+This package could also be modified to allow multiple harvesters through the use of multiple pages (or incognito pages?) to simultaneously generate headers.
+
 ## Installation
 ``go get github.com/Johnw7789/shape``
 
