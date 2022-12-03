@@ -31,7 +31,7 @@ harvester.InitializeHarvester()
   UserAgent:      "Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
   AcceptLanguage: "en",
   Screen: devices.Screen{
-    DevicePixelRatio: 2,
+    DevicePixelRatio: 3, // css pixel ratio
     Horizontal: devices.ScreenSize{
       Width:  1266,
       Height: 585,
