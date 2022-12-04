@@ -73,10 +73,10 @@ func (harvester *ShapeHarvester) HarvestHeaders() {
 	harvester.Page.MustEval(fmt.Sprintf(`function shape() {
 		try {
 			fetch("%s", {
-				method : "%s",
+				"method" : "%s",
 				"referrerPolicy": "no-referrer-when-downgrade",
 				"credentials": "include",
-				body: "%s",
+				"body": "%s",
 				"headers": {
 					"accept": "application/json",
 					"accept-language": "en-US,en;q=0.9",
@@ -88,7 +88,7 @@ func (harvester *ShapeHarvester) HarvestHeaders() {
 					"sec-fetch-mode": "cors",
 					"sec-fetch-site": "same-site",
 					"x-application-name": "web",
-				  },
+				},
 			})
 		} catch {}
 	  }`, harvester.ShapeUrl, harvester.Method, harvester.Body))
