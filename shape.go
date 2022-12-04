@@ -19,7 +19,7 @@ func NewBrowser(proxy string) *rod.Browser {
 	var browser *rod.Browser
 
 	if proxy != "" {
-		//incomplete proxy won't work yet
+		//incomplete code, proxy won't work yet
 
 		l := launcher.New()
 		l = l.Set(flags.ProxyServer, proxy)
@@ -75,7 +75,7 @@ func (harvester *ShapeHarvester) HarvestHeaders() {
 			fetch("%s", {
 				method : "%s",
 				"referrerPolicy": "no-referrer-when-downgrade",
-				  "credentials": "include",
+				"credentials": "include",
 				body: "%s",
 				"headers": {
 					"accept": "application/json",
