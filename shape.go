@@ -99,12 +99,12 @@ func (harvester *ShapeHarvester) InitializeHijacking() {
 
 	router.MustAdd("*", func(ctx *rod.Hijack) {
 		if harvester.BlockResources {
-			if ctx.Request.Type() == proto.NetworkResourceTypeImage {
-				ctx.Response.Fail(proto.NetworkErrorReasonBlockedByClient)
-			}
+			if ctx.Request.Method() == "GET" {
+				if ctx.Request.Type() == proto.NetworkResourceTypeImage || ctx.Request.Type() == proto.NetworkResourceTypeStylesheet {
+					ctx.Response.Fail(proto.NetworkErrorReasonBlockedByClient)
+				}
 
-			if ctx.Request.Type() == proto.NetworkResourceTypeStylesheet {
-				ctx.Response.Fail(proto.NetworkErrorReasonBlockedByClient)
+				ctx.ContinueRequest(&proto.FetchContinueRequest{})
 			}
 		}
 
