@@ -106,7 +106,6 @@ func (harvester *ShapeHarvester) InitializeHijacking() {
 			if ctx.Request.Type() == proto.NetworkResourceTypeStylesheet {
 				ctx.Response.Fail(proto.NetworkErrorReasonBlockedByClient)
 			}
-			ctx.ContinueRequest(&proto.FetchContinueRequest{})
 		}
 
 		if strings.Contains(ctx.Request.URL().Path, harvester.Identifier) {
