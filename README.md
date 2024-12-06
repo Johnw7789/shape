@@ -30,7 +30,7 @@ opts := shape.ShapeOpts{
 	Identifier:     "cart_items",
 	Method:         "POST",
 	Body:           "{}",
-	BlockResources: true, // * Will block extra unnecessary resources such as images and css, so it is more efficient
+	BlockResources: true, // * Will block extra unnecessary resources such as images and css
 }
 
 // * Create a ShapeHarvester, which immediately starts hijacking requests
