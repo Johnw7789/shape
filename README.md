@@ -36,25 +36,6 @@ opts := shape.ShapeOpts{
 // * Create a ShapeHarvester, which immediately starts hijacking requests
 harvester := shape.NewShapeHarvester(opts)
 
-// * The go-rod browser can emulate a wide variety of devices if preferred 
-/*harvester.Page.MustEmulate(devices.Device{
-  Title:          "iPhone 12",
-  Capabilities:   []string{"touch", "mobile"},
-  UserAgent:      "Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
-  AcceptLanguage: "en",
-  Screen: devices.Screen{
-    DevicePixelRatio: 3, // css pixel ratio
-    Horizontal: devices.ScreenSize{
-      Width:  1266,
-      Height: 585,
-    },
-    Vertical: devices.ScreenSize{
-      Width:  585,
-      Height: 1266,
-    },
-  },
-})*/
-
 // * Harvest headers every 2 seconds, the Headers map will be directly updated on the struct
 for {
 	harvester.HarvestHeaders()
