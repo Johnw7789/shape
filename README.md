@@ -11,20 +11,32 @@ This package could also be modified to allow multiple harvesters through the use
 This harvester has only been tested on Target.com. Success on other sites may vary wildly.
 
 
-```
-// Creates a ShapeHarvester and harvests headers every 2 seconds
+```Go
+// * The keys of the headers we want the values for
+headerNames := []string{
+	"X-GyJwza5Z-a",
+	"X-GyJwza5Z-b",
+	"X-GyJwza5Z-c",
+	"X-GyJwza5Z-d",
+	"X-GyJwza5Z-f",
+	"X-GyJwza5Z-z",
+}
 
-harvester := shape.ShapeHarvester{
+opts := shape.ShapeOpts{
+	HeaderNames:    headerNames,
+	Proxy: 		"",
 	Url:            "https://www.target.com",
 	ShapeUrl:       "https://carts.target.com/web_checkouts/v1/cart_items?field_groups=CART,CART_ITEMS,SUMMARY&key=9f36aeafbe60771e321a7cc95a78140772ab3e96",
 	Identifier:     "cart_items",
 	Method:         "POST",
 	Body:           "{}",
-	BlockResources: true, // Blocks extra unnecessary resources such as images and css
+	BlockResources: true, // * Will block extra unnecessary resources such as images and css, so it is more efficient
 }
 
-harvester.InitializeHarvester()
+// * Create a ShapeHarvester, which immediately starts hijacking requests
+harvester := shape.NewShapeHarvester(opts)
 
+// * The go-rod browser can emulate a wide variety of devices if preferred 
 /*harvester.Page.MustEmulate(devices.Device{
   Title:          "iPhone 12",
   Capabilities:   []string{"touch", "mobile"},
@@ -43,11 +55,10 @@ harvester.InitializeHarvester()
   },
 })*/
 
-// Can emulate a wide variety of devices if preferred 
-
+// * Harvest headers every 2 seconds, the Headers map will be directly updated on the struct
 for {
 	harvester.HarvestHeaders()
-	log.Println(harvester.Headers.XGyJwza5Za)
+	log.Println(harvester.Headers["XGyJwza5Za"])
 	time.Sleep(time.Second * time.Duration(2))
 }
 ```
