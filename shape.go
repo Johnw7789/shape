@@ -3,72 +3,33 @@ package shape
 import (
 	"fmt"
 	"strings"
+
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
-	"github.com/go-rod/rod/lib/launcher/flags"
 	"github.com/go-rod/rod/lib/proto"
-
-	"github.com/go-rod/stealth"
 )
 
-func init() {
+// * Returns a new ShapeHarvester with browser, page, and highjacking initialized and ready
+func NewShapeHarvester(opts ShapeOpts) *ShapeHarvester {
 	launcher.NewBrowser().MustGet()
-}
 
-func NewBrowser(proxy string) *rod.Browser {
-	var browser *rod.Browser
-
-	if proxy != "" {
-		//incomplete code, proxy won't work yet
-
-		l := launcher.New()
-		l = l.Set(flags.ProxyServer, proxy)
-
-		controlURL, _ := l.Launch()
-		browser := rod.New().ControlURL(controlURL).MustConnect()
-
-		go browser.MustHandleAuth("user", "password")()
-
-		browser.MustIgnoreCertErrors(true)
+	harvester := ShapeHarvester{
+		Headers: make(map[string]string),
+		opts:    opts,
 	}
 
-	browser = rod.New().MustConnect()
+	harvester.Browser = newBrowser("")
+	harvester.Page = newPage(harvester.Browser)
 
-	return browser
+	harvester.Page.MustNavigate(harvester.opts.Url).MustWaitLoad()
+
+	harvester.initializeHijacking()
+	harvester.HarvestHeaders()
+
+	return &harvester
 }
 
-func NewPage(browser *rod.Browser) *rod.Page {
-	page := stealth.MustPage(browser)
-
-	return page
-}
-
-func LoadSite(page *rod.Page, address string) {
-	page.MustNavigate(address)
-}
-
-type ShapeHeaders struct {
-	XGyJwza5Za string `json:"X-GyJwza5Z-a"`
-	XGyJwza5Zb string `json:"X-GyJwza5Z-b"`
-	XGyJwza5Zc string `json:"X-GyJwza5Z-c"`
-	XGyJwza5Zd string `json:"X-GyJwza5Z-d"`
-	XGyJwza5Zf string `json:"X-GyJwza5Z-f"`
-	XGyJwza5Zz string `json:"X-GyJwza5Z-z"`
-}
-
-type ShapeHarvester struct {
-	Proxy          string
-	Url            string
-	ShapeUrl       string
-	Identifier     string
-	Method         string
-	Body           string
-	Headers        ShapeHeaders
-	Page           *rod.Page
-	Browser        *rod.Browser
-	BlockResources bool
-}
-
+// * Fires a http request, which will then be intercepted and blocked by the hijacker
 func (harvester *ShapeHarvester) HarvestHeaders() {
 	harvester.Page.MustEval(fmt.Sprintf(`function shape() {
 		try {
@@ -91,14 +52,15 @@ func (harvester *ShapeHarvester) HarvestHeaders() {
 				},
 			})
 		} catch {}
-	  }`, harvester.ShapeUrl, harvester.Method, harvester.Body))
+	  }`, harvester.opts.ShapeUrl, harvester.opts.Method, harvester.opts.Body))
 }
 
-func (harvester *ShapeHarvester) InitializeHijacking() {
+// * Initializes the constant hijacking of requests, all but the specified url will be allowed and continued
+func (harvester *ShapeHarvester) initializeHijacking() {
 	router := harvester.Page.HijackRequests()
 
 	router.MustAdd("*", func(ctx *rod.Hijack) {
-		if harvester.BlockResources {
+		if harvester.opts.BlockResources {
 			if ctx.Request.Method() == "GET" {
 				if ctx.Request.Type() == proto.NetworkResourceTypeImage || ctx.Request.Type() == proto.NetworkResourceTypeStylesheet {
 					ctx.Response.Fail(proto.NetworkErrorReasonBlockedByClient)
@@ -108,31 +70,14 @@ func (harvester *ShapeHarvester) InitializeHijacking() {
 			}
 		}
 
-		if strings.Contains(ctx.Request.URL().Path, harvester.Identifier) {
+		if strings.Contains(ctx.Request.URL().Path, harvester.opts.Identifier) {
 			if ctx.Request.Method() == "OPTIONS" {
 				ctx.ContinueRequest(&proto.FetchContinueRequest{})
 			} else if ctx.Request.Method() == "POST" {
 				ctx.Response.Fail(proto.NetworkErrorReasonBlockedByClient)
-				for key, value := range ctx.Request.Headers() {
-					switch key {
-					case "X-GyJwza5Z-a":
-						harvester.Headers.XGyJwza5Za = value.String()
 
-					case "X-GyJwza5Z-b":
-						harvester.Headers.XGyJwza5Zb = value.String()
-
-					case "X-GyJwza5Z-c":
-						harvester.Headers.XGyJwza5Zc = value.String()
-
-					case "X-GyJwza5Z-d":
-						harvester.Headers.XGyJwza5Zd = value.String()
-
-					case "X-GyJwza5Z-f":
-						harvester.Headers.XGyJwza5Zf = value.String()
-
-					case "X-GyJwza5Z-z":
-						harvester.Headers.XGyJwza5Zz = value.String()
-					}
+				for _, header := range harvester.opts.HeaderNames {
+					harvester.Headers[header] = ctx.Request.Header(header)
 				}
 			}
 		}
@@ -140,14 +85,4 @@ func (harvester *ShapeHarvester) InitializeHijacking() {
 	})
 
 	go router.Run()
-}
-
-func (harvester *ShapeHarvester) InitializeHarvester() {
-	harvester.Browser = NewBrowser("")
-	harvester.Page = NewPage(harvester.Browser)
-
-	harvester.Page.MustNavigate(harvester.Url).MustWaitLoad()
-
-	harvester.InitializeHijacking()
-	harvester.HarvestHeaders()
 }
